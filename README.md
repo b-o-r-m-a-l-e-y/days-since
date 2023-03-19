@@ -5,6 +5,8 @@ Setup counters in src/config.json and run as you wish.
 
 I couldn`t find configurable app to track days so I decided to create on my own.
 
+![Example](example.png)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
