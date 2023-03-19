@@ -1,22 +1,18 @@
 import * as React from 'react';
-import { Card, Button } from 'react-bootstrap';
-import { Counter, getEventOccured, updateCounterModel, getDaysPast } from '../models/model.counter';
-
-interface CounterCardProps {
-    counter: Counter;
-}
+import { Card, Button, Modal } from 'react-bootstrap';
+import { Counter, getDaysPast, formatDate } from '../models/model.counter';
 
 interface CounterCardState {
     lastDate: Date;
     daysPassed: number;
 }
 
-export default class CounterCard extends React.Component<CounterCardProps, CounterCardState> {
-    constructor (props: CounterCardProps) {
+export default class CounterCard extends React.Component<Counter, CounterCardState> {
+    constructor (props: Counter) {
         super(props);
         this.state = {
-            lastDate: props.counter.lastDate,
-            daysPassed: getDaysPast(props.counter)
+            lastDate: props.lastDate,
+            daysPassed: getDaysPast(props.lastDate)
         };
     }
     render() {
@@ -24,10 +20,10 @@ export default class CounterCard extends React.Component<CounterCardProps, Count
             <div className="m-2">
                 <Card className="text-center">
                     <Card.Body>
-                        <Card.Title>{this.props.counter.title}</Card.Title>
+                        <Card.Title><h2>{this.props.title}</h2></Card.Title>
                         <Card.Text>
-                            <h2>{this.state.daysPassed} days ago</h2>
-                            Last event occured {getEventOccured(this.props.counter)}
+                            <h3>{this.state.daysPassed} days ago</h3>
+                            Last event occured {formatDate(this.state.lastDate)}
                         </Card.Text>
                     </Card.Body>
                     <Card.Footer>
@@ -35,16 +31,16 @@ export default class CounterCard extends React.Component<CounterCardProps, Count
                             Update counter
                         </Button>
                     </Card.Footer>
+                    <Modal isShown={true}> hide={false}</Modal>
                 </Card>
             </div>
         );
     }
     updateCounter = () => {
-        // this.state.daysPast = 5;
-        updateCounterModel(this.props.counter);
+        var newDate = new Date();
         this.setState({
-            lastDate: this.props.counter.lastDate,
-            daysPassed: getDaysPast(this.props.counter)
+            lastDate: newDate,
+            daysPassed: getDaysPast(newDate)
         });
     }
 }
