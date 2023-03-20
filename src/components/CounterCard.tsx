@@ -7,12 +7,16 @@ interface CounterCardState {
     daysPassed: number;
 }
 
-export default class CounterCard extends React.Component<Counter, CounterCardState> {
-    constructor (props: Counter) {
+interface CounterCardProps extends Counter {
+    isActive: boolean;
+}
+
+export default class CounterCard extends React.Component<CounterCardProps, CounterCardState> {
+    constructor (props: CounterCardProps) {
         super(props);
         this.state = {
             lastDate: props.lastDate,
-            daysPassed: getDaysPast(props.lastDate)
+            daysPassed: getDaysPast(props.lastDate),
         };
     }
     render() {
@@ -27,7 +31,7 @@ export default class CounterCard extends React.Component<Counter, CounterCardSta
                         </Card.Text>
                     </Card.Body>
                     <Card.Footer>
-                        <Button size="lg" variant="danger" onClick={this.updateCounter}>
+                        <Button size="lg" variant="danger" onClick={this.updateCounter} disabled={!this.props.isActive}>
                             Update counter
                         </Button>
                     </Card.Footer>
@@ -37,10 +41,12 @@ export default class CounterCard extends React.Component<Counter, CounterCardSta
         );
     }
     updateCounter = () => {
-        var newDate = new Date();
-        this.setState({
-            lastDate: newDate,
-            daysPassed: getDaysPast(newDate)
-        });
+        if (this.props.isActive) {
+            var newDate = new Date();
+            this.setState({
+                lastDate: newDate,
+                daysPassed: getDaysPast(newDate)
+            });
+        }
     }
 }
