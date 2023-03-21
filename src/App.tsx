@@ -1,11 +1,10 @@
 import React from 'react';
-import { Navbar, Container, Row, Col } from 'react-bootstrap';
+import { Navbar, Container } from 'react-bootstrap';
 import Counters from './components/Counters';
 
 /*
  * TODO:
- * 1. Update component each second
- * 2. Save update state in config
+ * Save update state in config
  */
 
 function App() {

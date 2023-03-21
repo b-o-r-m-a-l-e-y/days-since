@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, Button, Modal } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import { Counter, getDaysPast, formatDate } from '../models/model.counter';
 
 interface CounterCardState {
@@ -12,12 +12,21 @@ interface CounterCardProps extends Counter {
 }
 
 export default class CounterCard extends React.Component<CounterCardProps, CounterCardState> {
+    timer: any;
     constructor (props: CounterCardProps) {
         super(props);
         this.state = {
             lastDate: props.lastDate,
             daysPassed: getDaysPast(props.lastDate),
         };
+    }
+    componentDidMount() {
+        this.timer = setInterval(() => {
+            this.setState({daysPassed: getDaysPast(this.state.lastDate)})
+        }, 1000)
+    }
+    componentWillUnmount() {
+        clearInterval(this.timer);
     }
     render() {
         return (
@@ -31,16 +40,15 @@ export default class CounterCard extends React.Component<CounterCardProps, Count
                         </Card.Text>
                     </Card.Body>
                     <Card.Footer>
-                        <Button size="lg" variant="danger" onClick={this.updateCounter} disabled={!this.props.isActive}>
+                        <Button size="lg" variant="danger" onClick={this.onClickUpdate} disabled={!this.props.isActive}>
                             Update counter
                         </Button>
                     </Card.Footer>
-                    <Modal isShown={true}> hide={false}</Modal>
                 </Card>
             </div>
         );
     }
-    updateCounter = () => {
+    onClickUpdate = () => {
         if (this.props.isActive) {
             var newDate = new Date();
             this.setState({

@@ -11,5 +11,11 @@ export function getDaysPast(lastDate: Date) {
 }
 
 export function formatDate(date: Date) : string {
-    return `${date.getDate()}_${date.getMonth()}_${date.getFullYear()}`;
+    // return `${date.getDate()}_${date.getMonth()}_${date.getFullYear()}`;
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    }
+    return date.toLocaleDateString(undefined, options);
 }
