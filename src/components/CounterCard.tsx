@@ -34,8 +34,8 @@ export default class CounterCard extends React.Component<CounterCardProps, Count
                 <Card className="text-center">
                     <Card.Body>
                         <Card.Title><h2>{this.props.title}</h2></Card.Title>
+                        <Card.Title><h3>{this.state.daysPassed} days ago</h3></Card.Title>
                         <Card.Text>
-                            <h3>{this.state.daysPassed} days ago</h3>
                             Last event occured {formatDate(this.state.lastDate)}
                         </Card.Text>
                     </Card.Body>
@@ -51,10 +51,22 @@ export default class CounterCard extends React.Component<CounterCardProps, Count
     onClickUpdate = () => {
         if (this.props.isActive) {
             var newDate = new Date();
-            this.setState({
-                lastDate: newDate,
-                daysPassed: getDaysPast(newDate)
-            });
+            // const content = `lastDate=${newDate.getFullYear()}-${newDate.getMonth()}-${newDate.getDate()}`
+            const requestOptions = {
+                method: 'POST',
+                headers: { "Content-Type": "application/x-www-form-urlencoded"},
+                body: `lastDate=${newDate.toISOString()}`
+            };
+            fetch(`http://localhost:3001/update/${parseInt(this.props.id)-1}`, requestOptions)
+                .then(response => {
+                    if (response.ok) {
+                        this.setState({
+                            lastDate: newDate,
+                            daysPassed: getDaysPast(newDate)
+                        });
+                    }
+                })
+                .then(error => console.log(error));
         }
     }
 }
